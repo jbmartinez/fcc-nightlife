@@ -9,4 +9,4 @@ var SearchSchema = new Schema({
   active: Boolean
 });
 
-module.exports = mongoose.model('Search', SearchSchema);
+module.exports = mongoose.model('Venue', SearchSchema);
