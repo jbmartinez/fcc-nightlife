@@ -19,13 +19,15 @@ var foursquare = require('node-foursquare')(config);
 //     return res.status(200).json(venues);
 //   });
 // };
-exports.index = function(req, res) {
-  // Venue.find(function (err, venues) {
+exports.search = function(req, res) {
   var params = {section: 'coffee', venuePhotos: 1};
-  foursquare.Venues.explore(null, null, 'New York, NY', params, null, function(err, venues) {
-    if(err) { return handleError(res, err); }
+  foursquare.Venues.explore(null, null, req.params.location, params, null, function(err, venues) {
+    if(err) {
+      return handleError(res, err);
+    }
+
     var results = venues.groups[0].items
-      .map(function(item) {
+      .map(function mapItems(item) {
         return {
           id: item.venue.id,
           name: item.venue.name,
@@ -36,11 +38,10 @@ exports.index = function(req, res) {
         };
       });
 
-    console.log(JSON.stringify(results));
+    // console.log(JSON.stringify(results));
     return res.status(200).json(results);
     // return res.status(200).json(venues);
   });
-  // });
 };
 
 // Get a single venue

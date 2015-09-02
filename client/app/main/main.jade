@@ -1,19 +1,30 @@
-div(ng-include='"components/navbar/navbar.html"')
+.main
+  .header(ng-class="{true: 'is-submitted', false: ''}[formSubmitted===true]")
+    form(ng-submit="search()") I'm in 
+      input(type="text", name="search", id="search" ng-model="location" autofocus)
+  .results.ng-cloak
+    .card(ng-repeat="venue in venues")
+      img(ng-src="{{venue.photo}}")
+      a(href="{{venue.link}}", target="_blank")
+        h3 {{venue.name}}
+        //.extract {{article.extract}}
 
-header#banner.hero-unit
-  .container
-    h1 'Allo, 'Allo!
-    p.lead Kick-start your next web app with Angular Fullstack
-    img(src='assets/images/yeoman.png', alt='I\'m Yeoman')
+// div(ng-include='"components/navbar/navbar.html"')
 
-.container
-  .row
-    .col-lg-12
-      h1.page-header Features:
-      ul.nav.nav-tabs.nav-stacked.col-md-4.col-lg-4.col-sm-6(ng-repeat='thing in awesomeThings')
-        li
-          a(href='#', tooltip='{{thing.info}}')
-            | {{thing.name}}
+// header#banner.hero-unit
+//   .container
+//     h1 'Allo, 'Allo!
+//     p.lead Kick-start your next web app with Angular Fullstack
+//     img(src='assets/images/yeoman.png', alt='I\'m Yeoman')
+
+// .container
+//   .row
+//     .col-lg-12
+//       h1.page-header Features:
+//       ul.nav.nav-tabs.nav-stacked.col-md-4.col-lg-4.col-sm-6(ng-repeat='thing in awesomeThings')
+//         li
+//           a(href='#', tooltip='{{thing.info}}')
+//             | {{thing.name}}
 
 footer.footer
   .container
