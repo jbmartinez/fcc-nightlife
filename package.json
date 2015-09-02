@@ -18,11 +18,11 @@
     "method-override": "~1.0.0",
     "mongoose": "~4.0.3",
     "morgan": "~1.0.0",
+    "node-foursquare": "^0.3.0",
     "passport": "~0.2.0",
     "passport-local": "~0.1.6",
     "passport-twitter": "latest",
-    "serve-favicon": "~2.0.1",
-    "yelp": "^0.2.0"
+    "serve-favicon": "~2.0.1"
   },
   "devDependencies": {
     "grunt": "~0.4.4",
