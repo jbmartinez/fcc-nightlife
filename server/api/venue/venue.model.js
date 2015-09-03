@@ -3,10 +3,16 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-var SearchSchema = new Schema({
-  name: String,
-  info: String,
-  active: Boolean
+var VenueSchema = new Schema({
+  // name: String,
+  id: {
+    type: String,
+    unique: true
+  },
+  // count: Number,
+  who: [String]
 });
 
-module.exports = mongoose.model('Venue', SearchSchema);
+VenueSchema.path('id').index({unique: true});
+
+module.exports = mongoose.model('Venue', VenueSchema);

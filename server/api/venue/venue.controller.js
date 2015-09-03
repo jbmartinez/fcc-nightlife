@@ -19,13 +19,16 @@ var foursquare = require('node-foursquare')(config);
 //     return res.status(200).json(venues);
 //   });
 // };
+
 exports.search = function(req, res) {
+  // gets results from 4sq API
   var params = {section: 'coffee', venuePhotos: 1};
   foursquare.Venues.explore(null, null, req.params.location, params, null, function(err, venues) {
     if(err) {
       return handleError(res, err);
     }
 
+    // map the results to an easier to parse format
     var results = venues.groups[0].items
       .map(function mapItems(item) {
         return {
@@ -34,13 +37,29 @@ exports.search = function(req, res) {
           rating: item.venue.rating,
           location: item.venue.location.formattedAddress[0],
           link: 'https://foursquare.com/v/' + item.venue.id,
-          photo: item.venue.featuredPhotos.items[0].prefix + '100x100' + item.venue.featuredPhotos.items[0].suffix
+          photo: item.venue.featuredPhotos ? 
+            item.venue.featuredPhotos.items[0].prefix + '100x100' + item.venue.featuredPhotos.items[0].suffix : ''
         };
       });
 
-    // console.log(JSON.stringify(results));
-    return res.status(200).json(results);
-    // return res.status(200).json(venues);
+    // creates an array of IDs to be used to fetch additional data form the db
+    var indexes = results.map(function(result) {
+      return result.id;
+    });
+
+    // fetch data from db using IDs array and merge it with the results
+    Venue.find({id: {$in: indexes}}, function (err, venues) {
+      if (err) { return handleError(res, err); }
+      venues.forEach(function(val) {
+        if (val.who.length > 0) {
+          var i = _.findIndex(results, {'id': val.id});
+          _.assign(results[i], {who: val.who});
+        }
+      });
+
+      return res.status(200).json(results);
+    });
+
   });
 };
 
@@ -56,7 +75,7 @@ exports.show = function(req, res) {
 // Creates a new venue in the DB.
 exports.create = function(req, res) {
   Venue.create(req.body, function(err, venue) {
-    if(err) { return handleError(res, err); }
+    if (err) { return handleError(res, err); }
     return res.status(201).json(venue);
   });
 };
@@ -64,10 +83,11 @@ exports.create = function(req, res) {
 // Updates an existing venue in the DB.
 exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
-  Venue.findById(req.params.id, function (err, venue) {
+  Venue.findOne({id: req.params.id}, function (err, venue) {
     if (err) { return handleError(res, err); }
-    if(!venue) { return res.status(404).send('Not Found'); }
+    if (!venue) { return res.status(404).send('Not Found'); }
     var updated = _.extend(venue, req.body);
+    console.log(updated);
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.status(200).json(venue);
