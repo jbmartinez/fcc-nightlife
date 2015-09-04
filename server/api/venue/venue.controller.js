@@ -51,7 +51,7 @@ exports.search = function(req, res) {
     Venue.find({id: {$in: indexes}}, function (err, venues) {
       if (err) { return handleError(res, err); }
       venues.forEach(function(val) {
-        if (val.who.length > 0) {
+        if (val.who.length >= 0) {
           var i = _.findIndex(results, {'id': val.id});
           _.assign(results[i], {who: val.who});
         }
@@ -87,7 +87,6 @@ exports.update = function(req, res) {
     if (err) { return handleError(res, err); }
     if (!venue) { return res.status(404).send('Not Found'); }
     var updated = _.extend(venue, req.body);
-    console.log(updated);
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.status(200).json(venue);
