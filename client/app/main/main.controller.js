@@ -5,6 +5,8 @@ angular.module('nightlifeApp')
     $scope.venues = [];
     $scope.formSubmitted = false;
     $scope.location = '';
+    var ctrl = this;
+    ctrl.venueIndex = null;
 
     $scope.search = function() {
       $http.get('/api/venues/location/' + $scope.location).success(function(venues) {
@@ -42,14 +44,28 @@ angular.module('nightlifeApp')
         $http.post('/api/venues/', newVenue);
       }
     }
-
-    $scope.toggleCount = function(index) {
-      if (Auth.isLoggedIn()) {
-        updateVenue(index);
+    
+    function func(logged) {
+      console.log('user', Auth.getCurrentUser().name);
+      console.log('logged', logged);
+      if (logged) {
+        updateVenue(ctrl.venueIndex);
       } else {
         localStorage.setItem('search', JSON.stringify($scope.venues));
-        // $window.location.href = '/auth/twitter';
-        $window.location.href = '/login';
+        $window.location.href = '/auth/twitter';
+        // $window.location.href = '/login';
       }
+    }
+
+    $scope.toggleCount = function(index) {
+      ctrl.venueIndex = index;
+      Auth.isLoggedInAsync(func);
+      // if (Auth.isLoggedIn()) {
+      //   updateVenue(index);
+      // } else {
+      //   localStorage.setItem('search', JSON.stringify($scope.venues));
+      //   $window.location.href = '/auth/twitter';
+      //   // $window.location.href = '/login';
+      // }
     };
   });

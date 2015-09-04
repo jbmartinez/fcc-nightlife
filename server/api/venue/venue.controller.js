@@ -22,7 +22,8 @@ var foursquare = require('node-foursquare')(config);
 
 exports.search = function(req, res) {
   // gets results from 4sq API
-  var params = {section: 'coffee', venuePhotos: 1};
+  // signature function explore(lat, lng, near, params, accessToken, callback)
+  var params = {section: 'drinks', venuePhotos: 1};
   foursquare.Venues.explore(null, null, req.params.location, params, null, function(err, venues) {
     if(err) {
       return handleError(res, err);
