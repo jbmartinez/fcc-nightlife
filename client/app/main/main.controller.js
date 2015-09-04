@@ -2,7 +2,6 @@
 
 angular.module('nightlifeApp')
   .controller('MainCtrl', function ($scope, $http, $cookies, $window, Auth) {
-    console.log('C:', $cookies.search);
     $scope.venues = [];
     $scope.formSubmitted = false;
     $scope.location = '';
@@ -15,14 +14,20 @@ angular.module('nightlifeApp')
         $scope.venues = venues;
       });
       $scope.formSubmitted = true;
-      if ($cookies.get('search')) {
-        $cookies.remove('search');
-      }
+      // if ($cookies.get('search')) {
+      //   $cookies.remove('search');
+      // }
     };
     
-    if ($cookies.get('search')) {
-      $scope.location = $cookies.get('search');
-      $scope.search();
+    // if ($cookies.get('search')) {
+    var previousSearch = localStorage.getItem('search');
+    if (previousSearch) {
+      // $scope.location = $cookies.get('search');
+      // $scope.search();
+      $scope.venues = JSON.parse(previousSearch);
+      $scope.formSubmitted = true;
+      localStorage.removeItem('search');
+      //$cookies.remove('search');
     }
     
     $scope.toggleCount = function(index) {
@@ -49,8 +54,10 @@ angular.module('nightlifeApp')
         }
       } else {
         // $window.location.href = '/auth/twitter';
-        $cookies.put('search', search);
-        $window.location.href = '/login';
+        // $cookies.put('search', search);
+        localStorage.setItem('search', JSON.stringify($scope.venues));
+        console.log('cookie: ', localStorage.getItem('search'));
+       //  $window.location.href = '/login';
       }
       
       // console.log($scope.venues[index].who);
