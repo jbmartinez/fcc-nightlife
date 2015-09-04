@@ -12,14 +12,6 @@ var config = {
 
 var foursquare = require('node-foursquare')(config);
 
-// Get list of venues
-// exports.index = function(req, res) {
-//   Venue.find(function (err, venues) {
-//     if(err) { return handleError(res, err); }
-//     return res.status(200).json(venues);
-//   });
-// };
-
 exports.search = function(req, res) {
   // gets results from 4sq API
   // signature function explore(lat, lng, near, params, accessToken, callback)

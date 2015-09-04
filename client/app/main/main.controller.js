@@ -45,9 +45,7 @@ angular.module('nightlifeApp')
       }
     }
     
-    function func(logged) {
-      console.log('user', Auth.getCurrentUser().name);
-      console.log('logged', logged);
+    function checkLoggedIn(logged) {
       if (logged) {
         updateVenue(ctrl.venueIndex);
       } else {
@@ -59,13 +57,6 @@ angular.module('nightlifeApp')
 
     $scope.toggleCount = function(index) {
       ctrl.venueIndex = index;
-      Auth.isLoggedInAsync(func);
-      // if (Auth.isLoggedIn()) {
-      //   updateVenue(index);
-      // } else {
-      //   localStorage.setItem('search', JSON.stringify($scope.venues));
-      //   $window.location.href = '/auth/twitter';
-      //   // $window.location.href = '/login';
-      // }
+      Auth.isLoggedInAsync(checkLoggedIn);
     };
   });
