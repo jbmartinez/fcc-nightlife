@@ -5,6 +5,7 @@ angular.module('nightlifeApp')
     $scope.venues = [];
     $scope.formSubmitted = false;
     $scope.location = '';
+    $scope.userID = Auth.getCurrentUser()._id;
     var ctrl = this;
     ctrl.venueIndex = null;
 
