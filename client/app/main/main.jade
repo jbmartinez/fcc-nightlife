@@ -1,7 +1,7 @@
 .main.group
   .header(ng-class="{true: 'is-submitted', false: ''}[formSubmitted===true]")
-    form(ng-submit="search()") I'm in 
-      input(type="text", name="search", id="search" ng-model="location" autofocus)
+    form(name="search_form" ng-submit="search()" novalidate) I'm in 
+      input(type="text", name="search", id="search" ng-model="location" autofocus required placeholder="my city")
       i.fa.fa-search.icon-search(ng-click="search()")
   .results.ng-cloak
     .card(ng-repeat="venue in venues")

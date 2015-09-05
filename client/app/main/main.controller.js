@@ -10,6 +10,9 @@ angular.module('nightlifeApp')
     ctrl.venueIndex = null;
 
     $scope.search = function() {
+      if (!$scope.search_form.$valid) {
+        return false;
+      }
       $http.get('/api/venues/location/' + $scope.location).success(function(venues) {
         $scope.venues = venues;
       });
