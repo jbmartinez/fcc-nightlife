@@ -6,7 +6,7 @@
   .container.results.ng-cloak
     .row.card(ng-repeat="venue in venues")
       .three.columns
-        img(ng-src="{{venue.photo}}")
+        img(ng-src="{{venue.photo || 'assets/images/no_image.svg'}}")
       .seven.columns
         a(href="{{venue.link}}", target="_blank")
           h5 {{venue.name}}
@@ -19,10 +19,11 @@
     footer.footer(ng-class="{true: '', false: 'hidden'}[formSubmitted===true]")
       .container
         p
-          | Demo built by 
+          | Demo built by J. Martínez 
+          = ' | '
           a(href='https://twitter.com/_jmartinez')
-            i.fa.fa-twitter
-            | @_jmartinez
+            i.fa.fa-twitter 
+            | _jmartinez
           = ' | '
           a(href='https://github.com/jbmartinez/fcc-nightlife') GitHub
           = ' | ' 
